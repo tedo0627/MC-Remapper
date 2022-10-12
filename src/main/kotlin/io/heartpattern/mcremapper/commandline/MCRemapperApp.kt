@@ -66,6 +66,7 @@ class MCRemapperApp : CliktCommand() {
             else -> error("")
         }
     }.default(MappingProguardParser)
+    private val superTypeResolveFile: String? by option()
 
 
     private val versionInfo by lazy {
@@ -113,7 +114,8 @@ class MCRemapperApp : CliktCommand() {
         }.toMap())
 
         println("Resolve super type")
-        val superResolver = SuperTypeResolver.fromFile(input)
+        val superTypeFile = if (superTypeResolveFile != null) File(superTypeResolveFile!!) else input
+        val superResolver = SuperTypeResolver.fromFile(superTypeFile)
 
         if (autologger) {
             println("Preprocess auto logger")
